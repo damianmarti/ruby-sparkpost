@@ -65,9 +65,10 @@ module SparkPost
 
     def prepare_recipient(recipient)
       if recipient.is_a?(Hash)
-        raise ArgumentError,
-              "email missing - '#{recipient.inspect}'" unless recipient[:email]
-        { address: recipient }
+        unless recipient[:address][:email]
+          raise ArgumentError, "email missing - '#{recipient.inspect}'"
+        end
+        recipient
       else
         { address: { email: recipient } }
       end
